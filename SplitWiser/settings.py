@@ -25,8 +25,8 @@ CSRF_TRUSTED_ORIGINS = ['https://web-production-f501.up.railway.app']
 
 INSTALLED_APPS = [
     'MainApp',
-    'django_light',
-    'django_nvd3',
+    # 'django_light',
+    # 'django_nvd3',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
