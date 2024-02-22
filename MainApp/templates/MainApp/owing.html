@@ -1,0 +1,68 @@
+{% extends "MainApp/layout.html" %}
+
+{% block body %}
+    <div class="section-container">
+        <div id="owe-section">
+            <div id="owe-section-1">
+                <div class="expenseTypeBtns">
+                    <button class="oweExpensesBtn"><a href="{% url 'expenses' %}">Expenses You're Owed</a></button>
+                    <button class="owedExpensesBtn">Expenses You Owe</button>
+                    
+                </div>
+                <div id="owing-container">
+                    {% for date, expenses in expenses_by_date.items %}
+                        <h5 class="date-header">
+                            {% if date == today %}
+                                Today
+                            {% else %}
+                                {{ date }}
+                            {% endif %}
+                        </h5>
+                        <hr> 
+                        <ul class="owing-list">
+                            {% for owed in expenses %}
+                                <li class="owing-item">
+                                    <div class="owing-item-part-1">
+                                        <p class="owing-icon"></p>
+                                        <div class="owing-summary">
+                                            <a class="owing-header" href="{% url 'individual_expense' owed.expense.id %}">
+                                                {{ owed.expense.description }}
+                                            </a>
+                                            <div class="owing-sub-header">
+                                                <p>Created by {{ owed.expense.created_by_user.username }} at {{ owed.expense.date_added|time:"H:i" }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="owing-amount">${{ owed.remaining_balance|floatformat:2 }} {{ owed.expense.currency }}</p>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endfor %}
+                </div>  
+            </div>
+            
+            <div id="owe-section-2">
+                <div>
+                    <h5 class="progress-header">Where did your money go?</h5>
+                    <div class="owed-to-bars">
+                        {% for group in groups %}
+                            <div class="progress-bar-container">
+                                <div class="progess-bar-headers">
+                                    <p class="progress-title">{{ group.expense__payment_group__group_name }}</p>
+                                    <p class="progress-amount">${{ group.total_owed|floatformat:2 }}</p>
+                                </div>
+                                <div class="progress" style="height: 10px;">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: {{ group.percentage }}%" aria-valuenow="{{ group.percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="owe-section-buttons">
+                    <button class="add-expense-button"><a class="add-expense-link" href="{% url 'add_expense' %}">Add Expense</a></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock%}

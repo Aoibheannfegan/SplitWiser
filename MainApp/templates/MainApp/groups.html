@@ -1,0 +1,39 @@
+{% extends "MainApp/layout.html" %}
+
+{% block body %}
+    <div class="section-container">
+        <div class="groups-container">
+            <button class="addGroupBtn"><a href="{% url 'add_group' %}">Create a new group</a></button>
+
+            <div id="groups-list">
+                {% for group in groups %}
+                    <li class="group-item">
+                        <div class="owing-item-part-1">
+                            <p class="owing-icon"></p>
+                            <div class="owing-summary">
+                                <a class="owing-header" href="{% url 'individual_group' group.id %}">
+                                    {{ group }}
+                                </a>
+                                <div class="owing-sub-header">
+                                    <p>{% for member in group.members.all %} {{ member.username }} | {% endfor %}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="group-balance">
+                            {% if group.net_total < 0 %}
+                                <p class="owed-by-me-message">You Owe</p>
+                                <p class="owed-by-me-amount">${{ group.net_total|floatformat:2 }}</p>
+                            {% elif group.net_total > 0 %}
+                                <p class="owed-to-me-message">You're Owed</p>
+                                <p class="owed-to-me-amount">${{ group.net_total|floatformat:2 }}</p>
+                            {% else %}
+                                <p class="no-balance-message">No Balance</p>
+                                <p class="">$0.00</p>
+                            {% endif %}  
+                        </div>
+                    </li>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock%}

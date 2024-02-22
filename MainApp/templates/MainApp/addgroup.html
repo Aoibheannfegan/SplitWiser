@@ -1,0 +1,32 @@
+{% extends "MainApp/layout.html" %}
+
+{% block body %}
+    <div class="section-container">
+        <div id="addGroupContainer" class="addGroupContainer">
+            <button class="backBtn"><a class="link" href="{% url 'index' %}">Back to Home</a></button>
+            
+            <div id="addGroupFormContainer">
+                <h1 class="group-header">Create Group</h1>
+                <form id="groupForm">
+                    {% csrf_token %}
+                    <!-- {{ form }} -->
+                    <label>Group Name</label>
+                    <input class="group-input" type="text" id="newGroupTitle" />
+                    <label>Select Members</label>
+                    <div id="select-expense-members">
+                        {% for friend in friends %}
+                            <div class="form-check">
+                                <input id="checkFriendsInput" class="form-check-input friends-checked" type="checkbox" name="{{friend.id}}" value="{{friend.username}}" id="defaultCheck1">
+                                <label class="form-check-label" for="defaultCheck1">
+                                    {{ friend.username }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <p id="addGroupErrorMessage"></p>
+                    <button id="addGroupButton">Create Group</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

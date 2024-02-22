@@ -1,0 +1,79 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>SplitWiser</title>
+        
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@300&family=Karla:wght@500&display=swap" rel="stylesheet">
+        <script type="module" src="{% static 'MainApp/helpers.js' %}"></script>
+        <script type="module" src="{% static 'MainApp/script.js' %}"></script>
+        <script type="module" src="{% static 'MainApp/makepayment.js' %}"></script>
+        <!-- <script src="/node_modules/chart.js/dist/chart.umd.js"></script> -->
+        <script type="module" src="{% static 'MainApp/dashboard.js' %}"></script>
+        <script type="module" src="{% static 'MainApp/addExpense.js' %}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
+        <script
+            src="https://code.jquery.com/jquery-3.6.4.min.js"
+            integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+            crossorigin="anonymous">
+        </script>
+        <script src="https://kit.fontawesome.com/652b6cf5f8.js" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link href="{% static 'MainApp/styles.css' %}" rel="stylesheet">
+    </head>
+    <body class="main">
+        {% if user.is_authenticated %}
+            <div id="nav-section">
+
+                <div id="nav-container">
+                    <!-- <h1 id="app-title"><a class="nav-link" href="{% url 'index' %}">SplitWiser</a></h1> -->
+                    <div id="logged-in-status">
+                        <div id="userProfileImg"></div>
+                        {% if user.is_authenticated %}
+                            <h3>{{ user.username }}</h3>
+                        {% else %}
+                            Not signed in.
+                        {% endif %}
+                        <p>{{ user.email }}</p>
+                    </div>
+                    <ul id="nav">
+                        {% if user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'index' %}">Dashboard</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'expenses' %}">Expenses</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'add_expense' %}">Add Expense</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'groups' %}">Groups</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'add_friend' %}">Friends</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                    <div id="logout">
+                        {% if user.is_authenticated %}
+                            <button class="logoutBtn">
+                                <a class="logoutLink" href="{% url 'logout' %}">Log Out</a>
+                                <i class="fa-solid fa-arrow-right-from-bracket fa-lg" style="color: #ffffff;"></i>
+                            </button>
+                        
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- <hr> -->
+        {% block body %}
+        {% endblock %}
+    </body>
+</html>

@@ -1,0 +1,58 @@
+{% extends "MainApp/layout.html" %}
+
+{% block body %}
+    <div class="section-container">
+        <div id="individualExpenseContainer">
+            <button class="backBtn"><i class="fa-solid fa-arrow-left" style="color: #ffffff;"></i><a href="{% url 'expenses' %}"> All Expenses</a></button>
+            <div class="{% if expense.paid %}individualExpenseSummary Paid{% else %}individualExpenseSummary notPaid{% endif %}"> 
+                <!-- <p class="expense-date">{{ expense.date_added }}</p> 
+                <h2 class="expense-title">{{ expense.description }}</h2> -->
+                <ul class="expense-details">       
+                    <!-- <li class="expense-date">{{ expense.date_added }}</li> -->
+                    <li class="expense-date">Created by {{ expense.created_by_user }} on {{ expense.date_added }}</li> 
+                    <li class="expense-title">{{ expense.description }}</li>
+                    <li class="expense-amount">${{ expense.amount }}</li>
+                    <li>${{ expense.remaining_balance }} still owed</li>
+                    {% if expense.payment_group != None %}
+                        <li>{{expense.payment_group}}</li>
+                    {% endif %}
+                    <!-- {% if expense.paid == true %}
+                        <li class="paid">Paid</li>
+                    {% else %}
+                        <li class="not-paid">Not Paid</li>
+                    {% endif %} -->
+                </ul>
+            </div>
+            <div style="width: 50%; padding: 5px;" class="individualExpenseOwedByContainer">
+                <div class="owed-by-list">
+                {% for owing in split_between %}
+                    <li class="owing-user">
+                        <div class="owing-item-part-1">
+                            <p class="owing-icon">{{ owing.user.username |slice:"3" }}{{ owing.user.last_name|slice:":1" }}</p>
+                            <div class="owing-summary">
+                                <div class="owing-user-subheader">
+                                    <p>${{ owing.amount }} added at {{ owing.expense.date_added|time:"H:i" }}</p>
+                                    {% if owing.paid %} 
+                                        <p class="lent">Paid</p>
+                                    {% else %} 
+                                        <p class="borrowed">Not Paid</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="remaining-balance">
+                            {% if owing.remaining_balance > 0 and owing.user == current_user %}
+                                <button class="make-payment"><a href="{% url 'make_payment' expense.id %}">Pay</a></button>
+                            {% else %}
+                                <p class="owing-amount">${{ owing.remaining_balance }} {{ expense.currency }}</p>
+                                <p class="remaining">remaining</p>
+                            {% endif %}
+                        </div>
+
+                    </li>
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

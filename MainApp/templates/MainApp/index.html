@@ -1,0 +1,123 @@
+{% extends "MainApp/layout.html" %}
+
+{% block body %}
+    <div class="section-container">
+        <div id="home-container">
+            <div id="dashboard">
+                <!-- <div id="filters">
+                    <select name="users" class="form-inputs" id="friendFilter">    
+                        <option value="">Select Friend</option>         
+                        {% for friend in friends %}
+                            <option value="{{ friend.id }}">{{ friend.username }}</option>
+                        {% endfor %}
+                    </select>
+                    <select name="group" class="form-inputs" id="groupFilter">
+                        <option value="">Select Group</option> 
+                        {% for group in groups %}
+                            <option value="{{ group.id }}">{{ group.group_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div> -->
+                <div class="charts">
+                    <div id="header-chart-block" class="charts-block">
+                        <div class="header-chart owed-chart">
+                            <p>You're Owed</p>
+                            <h3>${{ owed_to_me_balance|floatformat:2 }}</h3>
+                        </div>
+                        <div class="header-chart owe-chart">
+                            <p>You Owe</p>
+                            <h3>${{ owed_by_me_balance|floatformat:2 }}</h3>
+                        </div>
+                        <div class="header-chart paid-chart">
+                            <p>You have</p>
+                            <h3><a class="chart-link" href="{% url 'owing' %}">{{ expenses_owed_by_me_count }}</a></h3>
+                            <p>expenses to pay</p>
+                        </div>
+                        <div class ="header-chart created-chart">
+                            <p>There are</p>
+                            <h3><a class="chart-link" href="{% url 'expenses' %}">{{ expenses_owed_to_me_count }}</a></h3>
+                            <p>expenses owed to you</p>
+                        </div>
+                    </div>
+                    <div id="main-dashboard-block">
+                        <div id="recent-expenses-chart-block" class="charts-block">
+                            <div class="recent-transactions-container">
+                                <h5>Recently Added Expenses</h5>
+                                <ul class="recent-transactions-list">
+                                    {% for expense in recent_expenses %}
+                                        <li class="recent-expense-item">
+                                            <div class="owing-item-part-1">
+                                                <p class="owing-icon"></p>
+                                                <div class="owing-summary">
+                                                    <a href="{% url 'individual_expense' expense.id %}">
+                                                        {{ expense.description }}
+                                                    </a>
+                                                    <div class="owing-sub-header">
+                                                        <p>Created by {{ expense.created_by_user.username }} at {{ expense.date_added|time:"H:i" }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p class="owing-amount">${{ expense.remaining_balance|floatformat:2 }}</p>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <div id="owed-chart-block" class="charts-block">
+                            <div class="dash-chart">
+                                <h5 class="progress-header">Who owes you money?</h5>
+                                <div class="owed-to-bars">
+                                    {% for friend in friends_owe %}
+                                        <div class="progress-bar-container">
+                                            <div class="progess-bar-headers">
+                                                <p class="progress-title">{{ friend.user__username }}</p>
+                                                <p class="progress-amount">${{ friend.total_owed|floatformat:2 }}</p>
+                                            </div>
+                                            <div class="progress" style="height: 10px;">
+                                                <div class="progress-bar bg-info" role="progressbar" style="width: {{ friend.percentage }}%" aria-valuenow="{{ group.percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="dash-chart">
+                                <h5 class="progress-header">Groups You Owe</h5>
+                                <div class="owed-to-bars">
+                                    {% for group in groups_owe %}
+                                    
+                                        <div class="progress-bar-container">
+                                            <div class="progess-bar-headers">
+                                                <p class="progress-title">{{ group.expense__payment_group__group_name }}</p>
+                                                <p class="progress-amount">${{ group.total_owed|floatformat:2 }}</p>
+                                            </div>
+                                            <div class="progress" style="height: 10px;">
+                                                <div class="progress-bar bg-success" role="progressbar" style="width: {{ group.percentage }}%" aria-valuenow="{{ group.percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <!-- <div class="dash-chart">
+                                <p>Friends Owe to You</p>
+                                <canvas id="friendsOweChart" width="200" height="200"></canvas>
+                            </div>
+                            <div class="dash-chart">
+                                <p>You Owe to Friends</p>
+                                <canvas id="friendsOwedChart" width="200" height="200"></canvas>
+                            </div>
+                            <div class="dash-chart">
+                                <p>Groups Owe to You</p>
+                                <canvas id="groupsOweChart" width="200" height="200"></canvas>
+                            </div>
+                            <div class="dash-chart">
+                                <p>You Owe to Groups</p>
+                                <canvas id="groupsOwedChart" width="200" height="200"></canvas>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+{% endblock %}

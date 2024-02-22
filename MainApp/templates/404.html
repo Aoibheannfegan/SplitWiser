@@ -1,0 +1,10 @@
+{% extends "MainApp/layout.html" %}
+
+{% block body %}
+    <div style="width: 100%;" id="not-found-container">
+        <dotlottie-player src="https://lottie.host/24324727-d99a-45e7-980c-c896bba7c37a/N2IejKGIe4.json" background="transparent" speed="1" style="width: 600px; height: 600px;" loop autoplay></dotlottie-player>
+        <button>
+            <a id="not-found-link" href="{% url 'index' %}">Go Back Home</a>
+        </button>
+    </div>
+{% endblock %}

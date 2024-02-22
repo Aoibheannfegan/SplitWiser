@@ -1,0 +1,35 @@
+{% extends "MainApp/layout.html" %}
+
+{% block body %}
+    <div class="section-container">
+        <div class="make-payment-container">
+            <div class="payment-details">
+                <p class="expense-added">{{ expense.expense.date_added }}</p>
+                <h3>Pay for {{ expense.expense.description }}</h3>
+                <ul class="make-payment-info-list">
+                    <li class="make-payment-info-items">
+                        <p class="make-payment-subheadings">Original Amount: </p>
+                        <p class="make-payment-info">{{ expense.amount }}</p>
+                    </li>
+                    <li class="make-payment-info-items">
+                        <p class="make-payment-subheadings">Balance Remaining: </p>
+                        <p id="balance-remaining" class="make-payment-info">{{ expense.remaining_balance }}</p>
+                    </li>
+                    <li class="make-payment-info-items">
+                        <p class="payment-created-by">Created By {{ expense.expense.created_by_user.username }} </p>
+                    </li>
+                </ul>
+                <h3 id="balance-message"></h3>
+            </div>
+            {% if expense.remaining_balance == 0 %}
+                <h3 class="payment-status">You've already paid for this expense</h3>
+            {% else %}
+                <form id="make-payment-form" class="form-layout" action="{% url 'make_payment' expense_id %}" method="post">
+                    {% csrf_token %}
+                    <input id="make-payment-amount" class="form-inputs" type="number" step="any" name="amount" placeholder="Payment Amount" min="0" max="{{ expense.remaining_balance }}" required>
+                    <input class="form-submit-btn" type="submit">
+                </form>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

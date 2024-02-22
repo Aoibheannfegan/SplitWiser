@@ -1,0 +1,37 @@
+{% extends "MainApp/layout.html" %}
+
+{% block body %}
+
+    <div class="login-section">
+
+        <div class="login-container">
+            <div>
+                <h2 class="login-header">Log In</h2>
+                <p class="login-subheading">Enter your username and password to access your account</p>
+            </div>
+            <form class="form-layout" action="{% url 'login' %}" method="post">
+                {% csrf_token %}
+                <label>Username</label>
+                <input autofocus class="login-inputs" type="text" name="username" placeholder="Enter your username">
+                <label>Password</label>
+                <input class="login-inputs" type="password" name="password" placeholder="Enter your password">
+                <input class="login-btn" type="submit" value="Login">
+            </form>
+            {% if message %}
+                <div class="login-message">{{ message }}</div>
+            {% endif %}
+
+            <div class="register-link">Don't have an account? <a href="{% url 'register' %}">Register here.</a></div>
+        </div>
+        <div class="landing-page-section">
+            <h2>Welcome to Split Wiser</h2>
+            <h5>Where Expense Sharing Becomes Effortless!</h5>
+            <div id="login-animation">
+                <dotlottie-player src="https://lottie.host/ac066824-5ff6-418a-ae6b-1ca64c229270/XnQjH7NJyO.json" background="transparent" speed="1" style="width: 400px; height: 400px;" loop autoplay></dotlottie-player>
+            </div>
+    
+            <!-- <h5>Sharing expenses just got a whole lot easier</h5> -->
+        </div>
+    </div>
+
+{% endblock %}

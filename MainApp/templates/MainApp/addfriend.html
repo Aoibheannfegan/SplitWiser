@@ -1,0 +1,42 @@
+{% extends "MainApp/layout.html" %}
+
+{% block body %}
+    <div class="section-container">
+        <div id="addFriendContainer" class="add-friend-container">
+            <form class="add-friend-form">
+                {% csrf_token %}
+                <h1 class="friend-header">Add Friend</h1>
+                <label>Email</label>
+                <input id="friendEmail" type=email >
+                <p id="addFriendErrorMessage"></p>
+                <button style="margin-top: 10px;" id="addFriendButton">Add Friend</button>
+            </form>
+            <div class="friends-list-container">
+                {% for friend in friends %}
+                    <li class="group-item">
+                        <div class="owing-item-part-1">
+                            <p class="owing-icon"></p>
+                            <div class="owing-summary">
+                                <a class="owing-header" href="{% url 'individual_friend' friend.friend.id %}">
+                                    {{ friend.friend }}
+                                </a>
+                            </div>
+                        </div>
+                        <div class="group-balance">
+                            {% if friend.net_total < 0 %}
+                                <p class="owed-by-me-message">You Owe</p>
+                                <p class="owed-by-me-amount">${{ friend.net_total|floatformat:2 }}</p>
+                            {% elif friend.net_total > 0 %}
+                                <p class="owed-to-me-message">You're Owed</p>
+                                <p class="owed-to-me-amount">${{ friend.net_total|floatformat:2 }}</p>
+                            {% else %}
+                                <p class="no-balance-message">No Balance</p>
+                                <p class="">$0.00</p>
+                            {% endif %}  
+                        </div>
+                    </li>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

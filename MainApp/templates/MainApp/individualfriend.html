@@ -1,0 +1,70 @@
+{% extends "MainApp/layout.html" %}
+
+{% block body %}
+    <div class="section-container">
+        <div style="padding: 0;" class="individualPageContainer">
+            <div id="individualFriendContainer">
+                <button class="backBtn"><i class="fa-solid fa-arrow-left" style="color: #ffffff;"></i><a href="{% url 'add_friend' %}"> All Friends</a></button>
+                <div class="friendSummary">   
+                        <!-- <li class="expense-date">Created by {{ expense.created_by_user }} on {{ expense.date_added }}</li>  -->
+                        <p class="group-title">{{ friend }}</p>
+                        {% if net_total < 0 %}
+                            <p class="group-amount borrowed">You owe ${{ net_total|floatformat:2 }}</p>
+                        {% elif net_total > 0 %}
+                            <p class="group-amount lent">You're owed ${{ net_total|floatformat:2 }}</p>
+                        {% else %}
+                            <p class="group-amount">No Outstanding Balance</p>
+                        {% endif %}
+                        
+                        <p class="borrowed" id="userTitle" name="{{ user }}">You owe {{ friend }} ${{ owed_by_me|floatformat:2 }}</p>
+                        <p class="lent" id="friendTitle" name="{{ friend }}">{{ friend }} owes you ${{ owed_to_me|floatformat:2 }}</p>
+                        {% if net_total < 0 %}
+                            <button class="make-payment" id="settleUp" name="{{net_total}}">Settle Up</button>
+                        {% endif %}
+                </div>
+                <div class="individualFriendOwedByContainer">
+                    <div class="owed-by-list">
+                    {% for expense in friend_expenses %}
+                        <div style="display: flex; align-items: center;">
+                            <li class="owing-item">
+                                <div class="owing-item-part-1">
+                                    <div class="group-expense-date">
+                                        <p class="expense-month">{{ expense.expense.date_added|date:"M"  }}</p>
+                                        <p class="expense-day">{{ expense.expense.date_added|date:"d"  }}</p>
+                                    </div>
+                                    <div class="owing-summary">
+                                        <a class="owing-header" href="{% url 'individual_expense' expense.expense.id %}">
+                                            {{ expense.expense.description }}
+                                        </a>
+                                        <div class="owing-sub-header">
+                                            <p>{{ expense.expense.created_by_user }} paid ${{ expense.expense.amount|floatformat:2 }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="display: grid; justify-items: end;">
+                                    {% if expense.expense.created_by_user == user %}
+                                        <p class="lent-borrowed-status lent">You lent</p>
+                                        <p class="owing-amount lent">${{ expense.amount|floatformat:2 }}</p>
+                                    {% else %}
+                                        <p class="lent-borrowed-status borrowed">You borrowed</p>
+                                        <p class="owing-amount borrowed">${{ expense.amount|floatformat:2 }}</p>
+                                    {% endif %}
+                                </div>
+                            </li>
+                            <div style="padding-left: 1rem">
+                                {% if expense.expense.created_by_user != user and expense.paid == False %}
+                                    <button class="make-payment"><a href="{% url 'make_payment' expense.expense.id %}">Pay</a></button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div id="makePaymentSection">
+                {% csrf_token %}
+                <form id="makePaymentForm"></form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

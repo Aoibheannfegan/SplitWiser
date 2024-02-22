@@ -1,0 +1,75 @@
+{% extends "MainApp/layout.html" %}
+
+{% block body %}
+    <div id="add-expense-section-container" class="section-container">
+        <div id="add-expense-form-container" class="add-expense-container">
+            <form id="addExpenseFormPartOne">
+                <h5>Who is this expense shared with?</h5>
+                <div id="expenseSplitBetweenBtns">
+                    <button id="groupBtn">Select Group</button>
+                    <button id="memberBtn">Select Members</button>
+                </div>
+                <div id="select-expense-group">
+                {% for group in groups %}
+                    <div class="form-check">
+                        <input class="form-check-input group-checked" type="radio" name="exampleRadios" id="exampleRadios1" value="{{group.group_name}}">
+                        <label class="form-check-label" for="exampleRadios1">
+                            {{ group.group_name }}
+                        </label>
+                    </div>
+                {% endfor %}
+                </div>
+                <div id="select-expense-members" style="display: none;">
+                {% for friend in friends %}
+                    <div class="form-check">
+                        <input id="checkFriendsInput" class="form-check-input friends-checked" type="checkbox" value="{{friend.username}}" id="defaultCheck1">
+                        <label class="form-check-label" for="defaultCheck1">
+                            {{ friend.username }}
+                        </label>
+                    </div>
+                {% endfor %}
+                    <div class="form-check" style="border: 1px solid green; display: none;">
+                        <input id="checkFriendsInput" class="form-check-input friends-checked" type="checkbox" value="{{user}}" id="defaultCheck1" checked>
+                        <label class="form-check-label" for="defaultCheck1">
+                            {{ user }}
+                        </label>
+                    </div>
+                </div>
+                <button id="submitFormPartOne">Next Step <i class="fa-solid fa-arrow-right fa-lg" style="color: #ffffff;"></i></button>
+            </form>
+            <form id="addExpenseFormPartTwo">
+                <!-- {% csrf_token %} -->
+                <button id="backBtn">
+                    <i class="fa-solid fa-arrow-left" style="color: #ffffff;"></i>
+                    <a id="goBackLink" class="logoutLink" href="#">Go Back</a>
+                </button>
+                <div>
+                    <ul id="friendsAddedList"></ul>
+                </div>
+                <div>
+                    <label for="description"><p class="formLabelImg"><i class="fa-regular fa-pen-to-square fa-lg" style="color: #ffffff;"></i></p></label>
+                    <input class="expenseDetailsInput" id="descriptionElement" type="text" placeholder="description" required />
+                </div>
+                <div>
+                    <label for="description"><p class="formLabelImg"><i class="fa-solid fa-dollar-sign fa-lg" style="color: #ffffff;"></i></p></label>
+                    <input class="expenseDetailsInput" id="inputAmount" type="number" step="0.01" placeholder="amount" required />
+                </div>
+                <p id="errorMessage"></p>
+                <div id="paidSplitMessage">Paid by you and split <button id="splitOptionsBtn">Evenly</button></div>
+            </form>
+            <div id="addExpenseFormPartThree">
+                {% csrf_token %}
+                <div id="splitButtons">
+                    <button id="evenBtn">=</button>
+                    <button id="unevenBtn">1.23</button>
+                    <button id="percentBtn">%</butto>
+                </div>
+                <form class="split-form-container" id="splitForm"></form>
+                <h4 id="expensePaidMessage"></h4>
+                <p id="expenseRemainingMessage"></p>
+                
+            </div>
+            <button style="display: none;" id="submitFormBtn">Add Expense</button>
+        </div>
+    </div>
+{% endblock %}

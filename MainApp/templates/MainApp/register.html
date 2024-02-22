@@ -1,0 +1,41 @@
+{% extends "MainApp/layout.html" %}
+
+{% block body %}
+    <div class="login-section">
+        <div class="landing-page-section">
+            <h5>Ditch the Math, Split Smarter</h5>
+            <h2>Join Split Wiser Today!</h2>
+            <div id="login-animation">
+
+                <dotlottie-player src="https://lottie.host/40908585-e42c-42ca-bb68-683b1081c1c0/H7ACEyfBin.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></dotlottie-player>
+            </div>
+        </div>
+        <div class="login-container">
+            <div>
+                <h2 class="login-header">Register</h2>
+            </div>
+            <form class="form-layout" action="{% url 'register' %}" method="post">
+                {% csrf_token %}
+                <label>First Name</label>
+                <input class="login-inputs" autofocus type="text" name="first_name" placeholder="Enter First Name">
+                <label>Last Name</label>
+                <input class="login-inputs" autofocus type="text" name="last_name" placeholder="Enter Last Name">
+                <label>Username</label>
+                <input class="login-inputs" autofocus type="text" name="username" placeholder="Enter username">
+                <label>Email</label>
+                <input class="login-inputs" type="email" name="email" placeholder="Enter your email address">
+                <label>Password</label>
+                <input class="login-inputs" type="password" name="password" placeholder="Enter password">
+                <input class="login-inputs" type="password" name="confirmation" placeholder="Confirm password">
+                <input class="login-btn" type="submit" value="Register">
+            </form>
+            {% if message %}
+                <div>{{ message }}</div>
+            {% endif %}
+
+            <div class="register-link">Already have an account? <a href="{% url 'login' %}">Log In here.</a></div>
+        </div>
+
+    </div>
+
+{% endblock %}
