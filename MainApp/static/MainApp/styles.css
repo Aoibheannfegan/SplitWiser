@@ -1228,7 +1228,6 @@ individual friend page  */
 .charts {
     display: grid;
     flex-direction: row;
-    /* justify-content: center; */
     width: 70vw;
     flex-wrap: wrap;
     height: 90vh;
@@ -1395,3 +1394,42 @@ individual friend page  */
 }
 
 
+/* @media (max-width: 850px) {
+    
+} */
+
+@media (max-width: 450px) {
+    #header-chart-block {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        width: 80%;
+        height: 320px;
+        border: 3px solid green;
+    }
+    
+    .header-chart {
+        width: 250px;
+        height: 150px;
+        border: 3px solid goldenrod;
+    }
+
+    #main-dashboard-block {
+        display: grid;
+    }
+
+    #recent-expenses-chart-block {
+        width: 90%;
+    }
+
+    #owed-chart-block {
+        width: 100%;
+        justify-content: flex-start;
+    }
+    
+    .dash-chart {
+        width: 90%;
+        height: 300px;
+    }
+    
+}
