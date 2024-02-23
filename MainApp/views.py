@@ -9,6 +9,7 @@ from django.utils import timezone
 from django.db.models import Q, Sum, Case, When, DecimalField, F
 from django.db.models.functions import Concat
 from django.template import RequestContext
+from django.core.exceptions import ObjectDoesNotExist
 import datetime
 import markdown
 import json
@@ -317,20 +318,29 @@ def addFriend(request):
         except User.DoesNotExist: 
             return JsonResponse({"message": "No user found with that email"})
 
-    current_user_friends = Friends.objects.get(user=request.user).friends.all()
-    friends=[]
-    user=request.user
-    for friend_object in current_user_friends:
-        friend = User.objects.get(username=friend_object.username)
-        total_owed_by_me = Owing.objects.filter(user=user, expense__created_by_user=friend, paid=False).aggregate(total_owed_by_me=Sum('remaining_balance'))['total_owed_by_me'] or 0
-        total_owed_to_me = Owing.objects.filter(user=friend, expense__created_by_user=request.user, paid=False).aggregate(total_owed_to_me=Sum('remaining_balance'))['total_owed_to_me'] or 0
-        net_total = total_owed_to_me - total_owed_by_me
-        friends.append({
-            'friend': friend,
-            'total_owed_by_me': total_owed_by_me,
-            'total_owed_to_me': total_owed_to_me,
-            'net_total': net_total
-        })
+    try:
+        current_user_friends = Friends.objects.get(user=request.user).friends.all()
+        user=request.user
+        if current_user_friends: 
+            print('Yay, found friends!')
+            friends=[]
+            for friend_object in current_user_friends:
+                friend = User.objects.get(username=friend_object.username)
+                total_owed_by_me = Owing.objects.filter(user=user, expense__created_by_user=friend, paid=False).aggregate(total_owed_by_me=Sum('remaining_balance'))['total_owed_by_me'] or 0
+                total_owed_to_me = Owing.objects.filter(user=friend, expense__created_by_user=request.user, paid=False).aggregate(total_owed_to_me=Sum('remaining_balance'))['total_owed_to_me'] or 0
+                net_total = total_owed_to_me - total_owed_by_me
+                friends.append({
+                    'friend': friend,
+                    'total_owed_by_me': total_owed_by_me,
+                    'total_owed_to_me': total_owed_to_me,
+                    'net_total': net_total
+                })
+        else:
+            print('no friends')
+            friends = None
+    except ObjectDoesNotExist:
+        print('No Friends object found for the current user.')
+        friends = None
     return render(request, "MainApp/addfriend.html", {
         "form": AddFriendForm(),
         "friends": friends,
