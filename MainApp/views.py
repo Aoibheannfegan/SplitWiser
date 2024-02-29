@@ -293,6 +293,7 @@ def addGroup(request):
     return render(request, "MainApp/addgroup.html", {
         "form": NewGroupForm(),
         "friends": friends,
+        "user": user,
     })
 
 @login_required
