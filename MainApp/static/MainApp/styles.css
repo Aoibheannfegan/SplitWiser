@@ -1402,16 +1402,15 @@ individual friend page  */
     #header-chart-block {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
+        gap: 0px;
         width: 80%;
         height: 320px;
-        border: 3px solid green;
     }
     
     .header-chart {
-        width: 250px;
-        height: 150px;
-        border: 3px solid goldenrod;
+        width: 150px;
+        height: 100px;
+        padding: 5px;
     }
 
     #main-dashboard-block {
